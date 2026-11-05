@@ -373,7 +373,7 @@ function go(){
  if(br){br.innerHTML='<span class="brand-icon"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.8" stroke-linecap="round" stroke-linejoin="round" width="22" height="22"><path d="M15 5v9a5 5 0 0 1-10 0"/><circle cx="15" cy="4.2" r="1.3" fill="#fff"/></svg></span><span class="jw-word">Join<em>way</em></span>'}
  const tr=document.getElementById('jwTrust');
  if(tr&&!document.getElementById('jwMarq')){
-  const names=['Sarandë','Kotor','Romë','Bari','Vlorë','Brezovicë','Ksamil','Dubrovnik','Ohër','Shkodër','Santorini','Napoli'];
+  ,'Paris','Rome','Barcelona','Lisbon','Amsterdam','Berlin','Vienna','Prague','Copenhagen','Stockholm','Athens','Milan','Zurich','Istanbul','Dubai','New York','Los Angeles','Miami','Toronto','Mexico City','São Paulo','Buenos Aires','Cape Town','Marrakech','Cairo','Nairobi','Tokyo','Seoul','Singapore','Bangkok','Sydney','Melbourne','Auckland'];
   const row=names.map(n=>'<span>'+n+'<b>✦</b></span>').join('');
   const m=document.createElement('div');m.id='jwMarq';m.className='jw-marq';m.setAttribute('aria-hidden','true');m.innerHTML='<div>'+row+row+'</div>';
   tr.after(m);
