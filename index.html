@@ -1,3 +1,50 @@
+<!-- Joinway privacy-friendly analytics -->
+<script>
+(function(){
+  if (window.joinwayAnalyticsInstalled) return;
+  window.joinwayAnalyticsInstalled = true;
+  var sessionKey = 'joinway_analytics_session';
+  var sessionId = '';
+  try {
+    sessionId = sessionStorage.getItem(sessionKey) || '';
+    if (!sessionId) {
+      sessionId = (window.crypto && crypto.randomUUID) ? crypto.randomUUID() : String(Date.now()) + '-' + Math.random().toString(36).slice(2);
+      sessionStorage.setItem(sessionKey, sessionId);
+    }
+  } catch (e) {
+    sessionId = String(Date.now()) + '-' + Math.random().toString(36).slice(2);
+  }
+  var ua = navigator.userAgent || '';
+  var browser = /Edg\//.test(ua) ? 'Edge' : /Chrome\//.test(ua) ? 'Chrome' : /Firefox\//.test(ua) ? 'Firefox' : /Safari\//.test(ua) ? 'Safari' : 'Other';
+  var os = /Windows/.test(ua) ? 'Windows' : /Android/.test(ua) ? 'Android' : /iPhone|iPad|iPod/.test(ua) ? 'iOS' : /Mac OS/.test(ua) ? 'macOS' : /Linux/.test(ua) ? 'Linux' : 'Other';
+  var device = /Mobi|Android|iPhone|iPad|iPod/.test(ua) ? 'mobile' : 'desktop';
+  function recordPageview(attempt) {
+    attempt = attempt || 0;
+    if (navigator.doNotTrack === '1') return;
+    try { if (localStorage.getItem('joinway_analytics_optout') === '1') return; } catch (e) {}
+    var db = window.joinwayDb;
+    if (!db) {
+      if (attempt < 12) setTimeout(function(){ recordPageview(attempt + 1); }, 500);
+      return;
+    }
+    var timezone = '';
+    try { timezone = Intl.DateTimeFormat().resolvedOptions().timeZone || ''; } catch (e) {}
+    db.from('page_views').insert({
+      path: location.pathname || '/',
+      referrer: document.referrer || null,
+      language: navigator.language || null,
+      timezone: timezone || null,
+      device: device,
+      browser: browser,
+      os: os,
+      screen_width: window.screen ? screen.width : null,
+      screen_height: window.screen ? screen.height : null,
+      session_id: sessionId
+    }).then(function(){}).catch(function(){});
+  }
+  window.addEventListener('load', function(){ setTimeout(function(){ recordPageview(0); }, 1400); }, {once:true});
+})();
+</script>
 <html lang="sq"><head>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script>
