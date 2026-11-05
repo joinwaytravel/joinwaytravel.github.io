@@ -22,6 +22,32 @@
     attempt = attempt || 0;
     if (navigator.doNotTrack === '1') return;
     try { if (localStorage.getItem('joinway_analytics_optout') === '1') return; } catch (e) {}
+    if (true) {
+      var timezone = '';
+      try { timezone = Intl.DateTimeFormat().resolvedOptions().timeZone || ''; } catch (e) {}
+      fetch('https://dpyvlixpzqdexsaikggf.supabase.co/rest/v1/page_views', {
+        method: 'POST',
+        headers: {
+          apikey: 'sb_publishable_Tmg47g44tfuydjxTV335LQ_HV8M7H2-',
+          Authorization: 'Bearer sb_publishable_Tmg47g44tfuydjxTV335LQ_HV8M7H2-',
+          'Content-Type': 'application/json',
+          Prefer: 'return=minimal'
+        },
+        body: JSON.stringify({
+          path: location.pathname || '/',
+          referrer: document.referrer || null,
+          language: navigator.language || null,
+          timezone: timezone || null,
+          device: device,
+          browser: browser,
+          os: os,
+          screen_width: window.screen ? screen.width : null,
+          screen_height: window.screen ? screen.height : null,
+          session_id: sessionId
+        })
+      }).catch(function(){});
+      return;
+    }
     var db = window.joinwayDb;
     if (!db) {
       if (attempt < 12) setTimeout(function(){ recordPageview(attempt + 1); }, 500);
